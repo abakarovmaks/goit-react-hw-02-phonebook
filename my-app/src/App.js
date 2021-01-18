@@ -4,7 +4,7 @@ import Section from './Components/Section/Section';
 import ContactForm from './Components/ContactForm/ContactForm';
 import ContactList from './Components/ContactList/ContactList';
 import Filter from './Components/Filter/Filter';
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -19,14 +19,75 @@ export default class App extends Component {
     filter: '',
   };
 
+  addContact = (name, number) => {
+    const { contacts } = this.state;
+
+    if (
+      contacts.find(
+        (contact) => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      alert(`${name} is already in Phonebook`);
+      return;
+    }
+
+    const newContact = {
+      id: uuidv4(),
+      name,
+      number,
+    };
+
+    this.setState(({ contacts }) => ({
+      contacts: [...contacts, newContact],
+    }));
+  };
+
+  handleFilter = (e) => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    const toLowerCaseFilter = filter.toLowerCase().trim();
+
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(toLowerCaseFilter)
+    );
+  };
+
+  deleteContact = (e) => {
+    const deletedId = e.currentTarget.dataset.id;
+
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter(
+        (contact) => contact.id !== deletedId
+      ),
+    }));
+    e.currentTarget.blur();
+  };
+
   render() {
+    const { contacts, filter } = this.state;
+    const filteredContacts = this.getFilteredContacts();
+
     return (
       <Container>
         <Section title="Phonebook">
-          <ContactForm />
+          <ContactForm onSubmit={this.addContact} />
         </Section>
         <Section title="Contacts">
-          <ContactList />
+          <Filter value={filter} onChange={this.handleFilter} />
+          {filter.trim() ? (
+            <ContactList
+              contacts={filteredContacts}
+              deleteHandler={this.deleteContact}
+            />
+          ) : (
+            <ContactList
+              contacts={contacts}
+              deleteHandler={this.deleteContact}
+            />
+          )}
         </Section>
       </Container>
     );
