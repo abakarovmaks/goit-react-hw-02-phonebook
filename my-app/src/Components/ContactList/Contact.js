@@ -18,5 +18,5 @@ Contact.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   phone: PropTypes.string.isRequired,
-  deleteHandler: PropTypes.string.isRequired,
+  deleteHandler: PropTypes.func.isRequired,
 };

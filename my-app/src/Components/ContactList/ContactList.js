@@ -10,7 +10,7 @@ export default function ContactList({ contacts, deleteHandler }) {
         Contact({
           id: contact.id,
           name: contact.name,
-          phone: contact.phone,
+          phone: contact.number,
           deleteHandler,
         })
       )}
