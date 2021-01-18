@@ -28,6 +28,7 @@ export default class ContactForm extends Component {
 
   render() {
     const { name, number } = this.state;
+
     return (
       <form className={styles.form} onSubmit={this.handleSubmitForm}>
         <label>

@@ -4,15 +4,10 @@ import styles from './Contact.module.css';
 
 export default function Contact({ id, name, phone, deleteHandler }) {
   return (
-    <li className={styles.contact} key={id}>
+    <li key={id} className={styles.contact}>
       <span className={styles.name}>{name}</span>
       <span className={styles.phone}>{phone}</span>
-      <button
-        className={styles.btn}
-        type="button"
-        onClick={deleteHandler}
-        data-id={id}
-      >
+      <button className={styles.btn} onClick={deleteHandler} data-id={id}>
         Delete
       </button>
     </li>
