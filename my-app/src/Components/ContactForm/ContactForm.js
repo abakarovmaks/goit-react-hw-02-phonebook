@@ -44,7 +44,7 @@ export default class ContactForm extends Component {
         <label>
           <input
             className={styles.input}
-            type="phone"
+            type="tel"
             value={number}
             name="number"
             placeholder="+380"
