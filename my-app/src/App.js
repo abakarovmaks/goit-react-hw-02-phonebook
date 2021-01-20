@@ -22,11 +22,12 @@ export default class App extends Component {
   addContact = (name, number) => {
     const { contacts } = this.state;
 
-    if (
-      contacts.find(
-        (contact) => contact.name.toLowerCase() === name.toLowerCase()
-      )
-    ) {
+    const toLowerCase = (contact) =>
+      contact.name.toLowerCase() === name.toLowerCase();
+
+    const contactFind = contacts.find(toLowerCase);
+
+    if (contactFind) {
       alert(`${name} is already in Phonebook`);
       return;
     }
