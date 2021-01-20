@@ -8,18 +8,26 @@ export default class ContactForm extends Component {
     number: '',
   };
 
-  handleSubmitForm = (e) => {
-    e.preventDefault();
+  handleSubmitForm = (event) => {
+    event.preventDefault();
+
     const { name, number } = this.state;
-    const formRefs = e.currentTarget;
-    if (name.trim() === '' || number.trim() === '') {
-      alert('Fill all fields!');
+    const formRefs = event.currentTarget;
+    const trim = name.trim() === '' || number.trim() === '';
+
+    function clearFields() {
       formRefs[formRefs.length - 1].blur();
+    }
+
+    if (trim) {
+      alert('Fill all fields!');
+      clearFields();
       return;
     }
+
     this.props.onSubmit(name.trim(), number.trim());
     this.setState({ name: '', number: '' });
-    formRefs[formRefs.length - 1].blur();
+    clearFields();
   };
 
   handleChange = ({ currentTarget }) => {
