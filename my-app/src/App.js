@@ -43,18 +43,20 @@ export default class App extends Component {
     }));
   };
 
-  handleFilter = (e) => {
-    this.setState({ filter: e.currentTarget.value });
+  handleFilterInput = (e) => {
+    const filter = e.currentTarget.value;
+    this.setState({ filter });
   };
 
-  getFilteredContacts = () => {
+  handleFilter() {
     const { contacts, filter } = this.state;
-    const toLowerCaseFilter = filter.toLowerCase().trim();
 
-    return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(toLowerCaseFilter)
-    );
-  };
+    return filter
+      ? contacts.filter(({ name }) =>
+          name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
+        )
+      : contacts;
+  }
 
   deleteContact = (e) => {
     const deletedId = e.currentTarget.dataset.id;
@@ -68,8 +70,7 @@ export default class App extends Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
-    const filteredContacts = this.getFilteredContacts();
+    const { filter } = this.state;
 
     return (
       <Container>
@@ -77,18 +78,11 @@ export default class App extends Component {
           <ContactForm onSubmit={this.addContact} />
         </Section>
         <Section title="Contacts">
-          <Filter value={filter} onChange={this.handleFilter} />
-          {filter.trim() ? (
-            <ContactList
-              contacts={filteredContacts}
-              deleteHandler={this.deleteContact}
-            />
-          ) : (
-            <ContactList
-              contacts={contacts}
-              deleteHandler={this.deleteContact}
-            />
-          )}
+          <Filter value={filter} onChange={this.handleFilterInput} />
+          <ContactList
+            contacts={this.handleFilter()}
+            deleteHandler={this.deleteContact}
+          />
         </Section>
       </Container>
     );
