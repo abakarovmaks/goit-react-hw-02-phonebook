@@ -6,11 +6,11 @@ import styles from './ContactList.module.css';
 export default function ContactList({ contacts, deleteHandler }) {
   return (
     <ul className={styles.list}>
-      {contacts.map((contact) =>
+      {contacts.map(({ id, name, number }) =>
         Contact({
-          id: contact.id,
-          name: contact.name,
-          phone: contact.number,
+          id,
+          name,
+          number,
           deleteHandler,
         })
       )}
@@ -18,6 +18,21 @@ export default function ContactList({ contacts, deleteHandler }) {
   );
 }
 
+ContactList.defaultProps = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.exact({
+      name: 'Name',
+      number: '+380',
+    })
+  ),
+};
+
 ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object),
+  contacts: PropTypes.arrayOf(
+    PropTypes.exact({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      number: PropTypes.string,
+    })
+  ),
 };
